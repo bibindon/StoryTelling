@@ -1,3 +1,5 @@
+// TODO フェードインアウト
+// TODO 連打できないようにする
 #include "StoryTelling.h"
 #include <sstream>
 

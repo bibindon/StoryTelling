@@ -269,6 +269,9 @@ void InitStory()
     IFont* pFont = new Font(g_pd3dDevice);
     pFont->Init();
 
+    // csvファイルから読むようにしたほうがいいような
+    // 別に必要ないような、微妙なところ。
+    // 巨大なゲームを作るわけじゃないし。
     std::vector<Page> pageList;
     {
         Page page;
