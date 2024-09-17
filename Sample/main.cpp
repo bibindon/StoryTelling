@@ -16,6 +16,11 @@
 #include <string>
 #include <vector>
 
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+
 #define SAFE_RELEASE(p) { if (p) { (p)->Release(); (p) = NULL; } }
 
 class Sprite : public ISprite
@@ -75,7 +80,9 @@ public:
     ~Sprite()
     {
         m_D3DSprite->Release();
+        m_D3DSprite = nullptr;
         m_pD3DTexture->Release();
+        m_pD3DTexture = nullptr;
     }
 
 private:
@@ -123,6 +130,7 @@ public:
     ~Font()
     {
         m_pFont->Release();
+        m_pFont = nullptr;
     }
 
 private:
@@ -348,6 +356,11 @@ VOID Cleanup()
 {
     SAFE_RELEASE(pMesh);
     SAFE_RELEASE(g_pFont);
+    delete[] pMaterials;
+    pMaterials = nullptr;
+    delete[] pTextures;
+    pTextures = nullptr;
+    SAFE_RELEASE(pEffect);
     SAFE_RELEASE(g_pd3dDevice);
     SAFE_RELEASE(g_pD3D);
 }
@@ -499,5 +512,7 @@ INT WINAPI wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ 
     }
 
     UnregisterClass("Window1", wc.hInstance);
+    Cleanup();
+    _CrtDumpMemoryLeaks();
     return 0;
 }
