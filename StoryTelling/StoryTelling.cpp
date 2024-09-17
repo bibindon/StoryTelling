@@ -52,7 +52,6 @@ void StoryTelling::Next()
     m_waitNextCount = 0;
 }
 
-// TODO Update‚ª–ß‚è’l‚ÅŠ®—¹‚ð’m‚ç‚¹‚é
 bool StoryTelling::Update()
 {
     bool isFinish = false;
@@ -119,7 +118,6 @@ void StoryTelling::Render()
     if (m_isFadeIn)
     {
         m_sprFade->DrawImage(0, 0, 255 - m_FadeInCount*255/FADE_FRAME_MAX);
-        //m_sprFade->DrawImage(0, 0);
     }
     if (m_isFadeOut)
     {
