@@ -266,6 +266,9 @@ void InitStory()
     Sprite* sprTextBack = new Sprite(g_pd3dDevice);
     sprTextBack->Load("textBack.png");
 
+    Sprite* sprFade = new Sprite(g_pd3dDevice);
+    sprFade->Load("black.png");
+
     IFont* pFont = new Font(g_pd3dDevice);
     pFont->Init();
 
@@ -338,7 +341,7 @@ void InitStory()
         pageList.push_back(page);
     }
 
-    story->Init(pFont, pSE, sprTextBack, pageList);
+    story->Init(pFont, pSE, sprTextBack, sprFade, pageList);
 }
 
 VOID Cleanup()
@@ -367,6 +370,17 @@ VOID Render()
     D3DXMatrixIdentity(&mat);
     mat = mat * View * Proj;
     pEffect->SetMatrix("matWorldViewProj", &mat);
+
+    if (story != nullptr)
+    {
+        bFinish = story->Update();
+        if (bFinish)
+        {
+            story->Finalize();
+            delete story;
+            story = nullptr;
+        }
+    }
 
     g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
         D3DCOLOR_XRGB(100, 100, 100), 1.0f, 0);
@@ -430,13 +444,7 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             if (story != nullptr)
             {
-                bFinish = story->Next();
-                if (bFinish)
-                {
-                    story->Finalize();
-                    delete story;
-                    story = nullptr;
-                }
+                story->Next();
             }
             break;
         }
@@ -447,12 +455,9 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
     case WM_LBUTTONDOWN:
     {
-        bFinish = story->Next();
-        if (bFinish)
+        if (story != nullptr)
         {
-            story->Finalize();
-            delete story;
-            story = nullptr;
+            story->Next();
         }
         break;
     }

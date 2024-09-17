@@ -1,5 +1,3 @@
-// TODO フェードインアウト
-// TODO 連打できないようにする
 #include "StoryTelling.h"
 #include <sstream>
 
@@ -17,16 +15,27 @@ std::vector<std::string> split(const std::string& s, char delim)
     return result;
 }
 
-void StoryTelling::Init(IFont* font, ISoundEffect* SE, ISprite* sprTextBack, const std::vector<Page>& pageList)
+void StoryTelling::Init(
+    IFont* font,
+    ISoundEffect* SE,
+    ISprite* sprTextBack,
+    ISprite* sprFade,
+    const std::vector<Page>& pageList)
 {
     m_font = font;
     m_SE = SE;
     m_sprTextBack = sprTextBack;
+    m_sprFade = sprFade;
     m_pageList = pageList;
+    m_isFadeIn = true;
 }
 
-bool StoryTelling::Next()
+void StoryTelling::Next()
 {
+    if (m_waitNextCount < WAIT_NEXT_FRAME)
+    {
+        return;
+    }
     int textIndex = m_pageList.at(m_pageIndex).GetTextIndex();
     int textIndexMax = m_pageList.at(m_pageIndex).GetTextList().size();
     if (textIndex < textIndexMax - 1)
@@ -35,20 +44,55 @@ bool StoryTelling::Next()
     }
     else
     {
-        if (m_pageIndex < (int)m_pageList.size() - 1)
-        {
-            textIndex = 0;
-            m_pageIndex++;
-        }
-        else
-        {
-            return true;
-        }
+        m_FadeOutCount = 0;
+        m_isFadeOut = true;
     }
     m_pageList.at(m_pageIndex).SetTextIndex(textIndex);
     m_SE->PlayMove();
+    m_waitNextCount = 0;
+}
 
-    return false;
+// TODO Updateが戻り値で完了を知らせる
+bool StoryTelling::Update()
+{
+    bool isFinish = false;
+    m_waitNextCount++;
+    if (m_isFadeIn)
+    {
+        if (m_FadeInCount < FADE_FRAME_MAX)
+        {
+            m_FadeInCount++;
+        }
+        else
+        {
+            m_isFadeIn = false;
+            m_FadeInCount = 0;
+        }
+    }
+    if (m_isFadeOut)
+    {
+        if (m_FadeOutCount < FADE_FRAME_MAX)
+        {
+            m_FadeOutCount++;
+        }
+        else
+        {
+            m_isFadeOut = false;
+            m_FadeOutCount = 0;
+            m_isFadeIn = true;
+            m_FadeInCount = 0;
+            if (m_pageIndex <= m_pageList.size() - 2)
+            {
+                m_pageIndex++;
+                m_pageList.at(m_pageIndex).SetTextIndex(0);
+            }
+            else
+            {
+                isFinish = true;
+            }
+        }
+    }
+    return isFinish;
 }
 
 void StoryTelling::Render()
@@ -71,12 +115,24 @@ void StoryTelling::Render()
     {
         m_font->DrawText_(vss.at(textIndex).at(2), 100, 830);
     }
+
+    if (m_isFadeIn)
+    {
+        m_sprFade->DrawImage(0, 0, 255 - m_FadeInCount*255/FADE_FRAME_MAX);
+        //m_sprFade->DrawImage(0, 0);
+    }
+    if (m_isFadeOut)
+    {
+        m_sprFade->DrawImage(0, 0, m_FadeOutCount*255/FADE_FRAME_MAX);
+    }
 }
 
 void StoryTelling::Finalize()
 {
     delete m_sprTextBack;
     m_sprTextBack = nullptr;
+    delete m_sprFade;
+    m_sprFade = nullptr;
     delete m_font;
     m_font = nullptr;
     delete m_SE;

@@ -1,3 +1,4 @@
+// CSVファイル読み込みは保留。このクラスを使う機会が3回くらいしかないなら、作っても意味ない。
 #pragma once
 #include <string>
 #include <vector>
@@ -49,9 +50,15 @@ class StoryTelling
 {
 public:
 
-    void Init(IFont* font, ISoundEffect* SE, ISprite* sprTextBack, const std::vector<Page>& pageList);
+    void Init(
+        IFont* font,
+        ISoundEffect* SE,
+        ISprite* sprTextBack,
+        ISprite* sprFade,
+        const std::vector<Page>& pageList);
 
-    bool Next();
+    void Next();
+    bool Update();
     void Render();
 
     void Finalize();
@@ -63,5 +70,15 @@ private:
     ISoundEffect* m_SE;
     std::vector<Page> m_pageList;
     int m_pageIndex = 0;
+
+    ISprite* m_sprFade;
+    const int FADE_FRAME_MAX = 30;
+    bool m_isFadeIn = false;
+    int m_FadeInCount = 0;
+    bool m_isFadeOut = false;
+    int m_FadeOutCount = 0;
+
+    const int WAIT_NEXT_FRAME = 60;
+    int m_waitNextCount = 0;
 };
 
