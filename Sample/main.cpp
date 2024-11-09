@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 
+using namespace NSStoryTelling;
 
 #define SAFE_RELEASE(p) { if (p) { (p)->Release(); (p) = NULL; } }
 

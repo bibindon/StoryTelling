@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+namespace NSStoryTelling
+{
 class ISprite
 {
 public:
@@ -81,4 +83,5 @@ private:
     const int WAIT_NEXT_FRAME = 60;
     int m_waitNextCount = 0;
 };
+}
 

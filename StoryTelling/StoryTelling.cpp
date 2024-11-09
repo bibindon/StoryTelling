@@ -1,6 +1,8 @@
 #include "StoryTelling.h"
 #include <sstream>
 
+using namespace NSStoryTelling;
+
 std::vector<std::string> split(const std::string& s, char delim)
 {
     std::vector<std::string> result;
@@ -80,7 +82,7 @@ bool StoryTelling::Update()
             m_FadeOutCount = 0;
             m_isFadeIn = true;
             m_FadeInCount = 0;
-            if (m_pageIndex <= m_pageList.size() - 2)
+            if (m_pageIndex <= (int)m_pageList.size() - 2)
             {
                 m_pageIndex++;
                 m_pageList.at(m_pageIndex).SetTextIndex(0);
