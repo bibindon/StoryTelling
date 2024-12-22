@@ -74,13 +74,13 @@ private:
     int m_pageIndex = 0;
 
     ISprite* m_sprFade;
-    const int FADE_FRAME_MAX = 30;
+    const int FADE_FRAME_MAX = 20;
     bool m_isFadeIn = false;
     int m_FadeInCount = 0;
     bool m_isFadeOut = false;
     int m_FadeOutCount = 0;
 
-    const int WAIT_NEXT_FRAME = 60;
+    const int WAIT_NEXT_FRAME = 10;
     int m_waitNextCount = 0;
 };
 }

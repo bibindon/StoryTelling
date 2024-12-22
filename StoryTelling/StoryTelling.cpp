@@ -57,7 +57,6 @@ void StoryTelling::Next()
 bool StoryTelling::Update()
 {
     bool isFinish = false;
-    m_waitNextCount++;
     if (m_isFadeIn)
     {
         if (m_FadeInCount < FADE_FRAME_MAX)
@@ -70,7 +69,7 @@ bool StoryTelling::Update()
             m_FadeInCount = 0;
         }
     }
-    if (m_isFadeOut)
+    else if (m_isFadeOut)
     {
         if (m_FadeOutCount < FADE_FRAME_MAX)
         {
@@ -92,6 +91,10 @@ bool StoryTelling::Update()
                 isFinish = true;
             }
         }
+    }
+    else
+    {
+        m_waitNextCount++;
     }
     return isFinish;
 }
