@@ -10,6 +10,7 @@ class ISprite
 public:
     virtual void DrawImage(const int x, const int y, const int transparency = 255) = 0;
     virtual void Load(const std::string& filepath) = 0;
+    virtual ISprite* Create() = 0;
     virtual ~ISprite() {};
 };
 
@@ -52,12 +53,18 @@ class StoryTelling
 {
 public:
 
-    void Init(
-        IFont* font,
-        ISoundEffect* SE,
-        ISprite* sprTextBack,
-        ISprite* sprFade,
-        const std::vector<Page>& pageList);
+    void Init(IFont* font,
+              ISoundEffect* SE,
+              ISprite* sprTextBack,
+              ISprite* sprFade,
+              const std::vector<Page>& pageList);
+
+    void Init(IFont* font,
+              ISoundEffect* SE,
+              ISprite* sprTextBack,
+              ISprite* sprFade,
+              const std::string& csvFile,
+              ISprite* sprImage);
 
     void Next();
     bool Update();
@@ -74,6 +81,7 @@ private:
     int m_pageIndex = 0;
 
     ISprite* m_sprFade;
+    ISprite* m_sprImage;
     const int FADE_FRAME_MAX = 20;
     bool m_isFadeIn = false;
     int m_FadeInCount = 0;

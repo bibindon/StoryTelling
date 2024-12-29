@@ -78,12 +78,22 @@ public:
         m_height = desc.Height;
     }
 
+    ISprite* Create()
+    {
+        return new Sprite(m_pD3DDevice);
+    }
+
     ~Sprite()
     {
-        m_D3DSprite->Release();
-        m_D3DSprite = nullptr;
-        m_pD3DTexture->Release();
-        m_pD3DTexture = nullptr;
+        if (m_D3DSprite != nullptr)
+        {
+            m_D3DSprite->Release();
+        }
+
+        if (m_pD3DTexture != nullptr)
+        {
+            m_pD3DTexture->Release();
+        }
     }
 
 private:
@@ -284,73 +294,83 @@ void InitStory()
     // csvファイルから読むようにしたほうがいいような
     // 別に必要ないような、微妙なところ。
     // 巨大なゲームを作るわけじゃないし。
-    std::vector<Page> pageList;
-    {
-        Page page;
-        Sprite* sprite = new Sprite(g_pd3dDevice);
-        sprite->Load("opening01.png");
-        page.SetSprite(sprite);
-        std::vector<std::vector<std::string> > vss;
-        std::vector<std::string> vs;
-        vs.push_back("サンプルテキスト１");
-        vs.push_back("サンプルテキスト２");
-        vs.push_back("サンプルテキスト３");
-        vss.push_back(vs);
-        vs.clear();
-        vs.push_back("サンプルテキスト４サンプルテキスト４サンプルテキスト４");
-        vs.push_back("サンプルテキスト５サンプルテキスト５サンプルテキスト５");
-        vs.push_back("サンプルテキスト６サンプルテキスト６サンプルテキスト６");
-        vss.push_back(vs);
-        vs.clear();
-        vs.push_back("サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７");
-        vs.push_back("サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８");
-        vs.push_back("サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９");
-        vss.push_back(vs);
-        page.SetTextList(vss);
-        pageList.push_back(page);
-    }
-    {
-        Page page;
-        Sprite* sprite = new Sprite(g_pd3dDevice);
-        sprite->Load("opening02.png");
-        page.SetSprite(sprite);
-        std::vector<std::vector<std::string> > vss;
-        std::vector<std::string> vs;
-        vs.push_back("サンプルテキストＡ");
-        vs.push_back("サンプルテキストＢ");
-        vs.push_back("サンプルテキストＣ");
-        vss.push_back(vs);
-        vs.clear();
-        vs.push_back("サンプルテキストＤサンプルテキストＤサンプルテキストＤ");
-        vs.push_back("サンプルテキストＥサンプルテキストＥ");
-        vs.push_back("サンプルテキストＦ");
-        vss.push_back(vs);
-        page.SetTextList(vss);
-        pageList.push_back(page);
-    }
-    {
-        Page page;
-        Sprite* sprite = new Sprite(g_pd3dDevice);
-        sprite->Load("opening03.png");
-        page.SetSprite(sprite);
-        std::vector<std::vector<std::string> > vss;
-        std::vector<std::string> vs;
-        vs.push_back("１１１１１１１１１１１");
-        vs.push_back("２２２２２２２２２２２２２");
-        vs.push_back("３３３３３３３３３３３３３３３３３");
-        vss.push_back(vs);
-        vs.clear();
-        vs.push_back("４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４");
-        vs.push_back("");
-        vss.push_back(vs);
-        vs.clear();
-        vs.push_back("５５５５５５５５５５５５５５５５５");
-        vss.push_back(vs);
-        page.SetTextList(vss);
-        pageList.push_back(page);
-    }
+    // 追記：必要だった。
 
-    story->Init(pFont, pSE, sprTextBack, sprFade, pageList);
+    if ("csv mode")
+    {
+        Sprite* sprite = new Sprite(g_pd3dDevice);
+        story->Init(pFont, pSE, sprTextBack, sprFade, "..\\Sample\\sample.csv", sprite);
+    }
+    else
+    {
+        std::vector<Page> pageList;
+        {
+            Page page;
+            Sprite* sprite = new Sprite(g_pd3dDevice);
+            sprite->Load("opening01.png");
+            page.SetSprite(sprite);
+            std::vector<std::vector<std::string> > vss;
+            std::vector<std::string> vs;
+            vs.push_back("サンプルテキスト１");
+            vs.push_back("サンプルテキスト２");
+            vs.push_back("サンプルテキスト３");
+            vss.push_back(vs);
+            vs.clear();
+            vs.push_back("サンプルテキスト４サンプルテキスト４サンプルテキスト４");
+            vs.push_back("サンプルテキスト５サンプルテキスト５サンプルテキスト５");
+            vs.push_back("サンプルテキスト６サンプルテキスト６サンプルテキスト６");
+            vss.push_back(vs);
+            vs.clear();
+            vs.push_back("サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７");
+            vs.push_back("サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８");
+            vs.push_back("サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９");
+            vss.push_back(vs);
+            page.SetTextList(vss);
+            pageList.push_back(page);
+        }
+        {
+            Page page;
+            Sprite* sprite = new Sprite(g_pd3dDevice);
+            sprite->Load("opening02.png");
+            page.SetSprite(sprite);
+            std::vector<std::vector<std::string> > vss;
+            std::vector<std::string> vs;
+            vs.push_back("サンプルテキストＡ");
+            vs.push_back("サンプルテキストＢ");
+            vs.push_back("サンプルテキストＣ");
+            vss.push_back(vs);
+            vs.clear();
+            vs.push_back("サンプルテキストＤサンプルテキストＤサンプルテキストＤ");
+            vs.push_back("サンプルテキストＥサンプルテキストＥ");
+            vs.push_back("サンプルテキストＦ");
+            vss.push_back(vs);
+            page.SetTextList(vss);
+            pageList.push_back(page);
+        }
+        {
+            Page page;
+            Sprite* sprite = new Sprite(g_pd3dDevice);
+            sprite->Load("opening03.png");
+            page.SetSprite(sprite);
+            std::vector<std::vector<std::string> > vss;
+            std::vector<std::string> vs;
+            vs.push_back("１１１１１１１１１１１");
+            vs.push_back("２２２２２２２２２２２２２");
+            vs.push_back("３３３３３３３３３３３３３３３３３");
+            vss.push_back(vs);
+            vs.clear();
+            vs.push_back("４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４");
+            vs.push_back("");
+            vss.push_back(vs);
+            vs.clear();
+            vs.push_back("５５５５５５５５５５５５５５５５５");
+            vss.push_back(vs);
+            page.SetTextList(vss);
+            pageList.push_back(page);
+        }
+
+        story->Init(pFont, pSE, sprTextBack, sprFade, pageList);
+    }
 }
 
 VOID Cleanup()

@@ -1,9 +1,10 @@
 #include "StoryTelling.h"
 #include <sstream>
+#include "HeaderOnlyCsv.hpp"
 
 using namespace NSStoryTelling;
 
-std::vector<std::string> split(const std::string& s, char delim)
+static std::vector<std::string> split(const std::string& s, char delim)
 {
     std::vector<std::string> result;
     std::stringstream ss(s);
@@ -29,6 +30,83 @@ void StoryTelling::Init(
     m_sprTextBack = sprTextBack;
     m_sprFade = sprFade;
     m_pageList = pageList;
+    m_isFadeIn = true;
+}
+
+void NSStoryTelling::StoryTelling::Init(IFont* font,
+                                        ISoundEffect* SE,
+                                        ISprite* sprTextBack,
+                                        ISprite* sprFade,
+                                        const std::string& csvFile,
+                                        ISprite* sprImage)
+{
+    m_font = font;
+    m_SE = SE;
+    m_sprTextBack = sprTextBack;
+    m_sprFade = sprFade;
+    m_sprImage = sprImage;
+
+    std::vector<std::vector<std::string>> vvs = csv::Read(csvFile);
+    std::vector<Page> pageList;
+    Page page;
+    int pageNum = 0;
+    std::vector<std::vector<std::string>> textList;
+    for (size_t i = 1; i < vvs.size(); ++i)
+    {
+        std::vector<std::string> line = vvs.at(i);
+        int pageNumTemp = std::stoi(line.at(0));
+
+        // 新しいページ
+        if (pageNum != pageNumTemp)
+        {
+            // 古いページを登録
+            {
+                // １行目だったら古いページはない
+                if (page.GetSprite() == nullptr)
+                {
+                    // Do nothing
+                }
+                else
+                {
+                    page.SetTextList(textList);
+                    pageList.push_back(page);
+
+                    page.SetSprite(nullptr);
+                    textList.clear();
+                }
+            }
+            pageNum = pageNumTemp;
+            std::string imagePath = line.at(1);
+
+            ISprite* sprite = sprImage->Create();
+            sprite->Load(imagePath);
+            page.SetSprite(sprite);
+
+            std::vector<std::string> texts = split(line.at(2), '\n');
+
+            for (size_t j = 0; j < texts.size(); ++j)
+            {
+                texts.at(j).erase(std::remove(texts.at(j).begin(), texts.at(j).end(), '"'),
+                                  texts.at(j).end());
+            }
+            textList.push_back(texts);
+        }
+        else
+        {
+            std::vector<std::string> texts = split(line.at(2), '\n');
+            for (size_t j = 0; j < texts.size(); ++j)
+            {
+                texts.at(j).erase(std::remove(texts.at(j).begin(), texts.at(j).end(), '"'),
+                                  texts.at(j).end());
+            }
+            textList.push_back(texts);
+        }
+    }
+    page.SetTextList(textList);
+    pageList.push_back(page);
+
+    m_pageList = pageList;
+
     m_isFadeIn = true;
 }
 
@@ -145,6 +223,8 @@ void StoryTelling::Finalize()
         delete m_pageList.at(i).GetSprite();
         m_pageList.at(i).SetSprite(nullptr);
     }
+    delete m_sprImage;
+    m_sprImage = nullptr;
 }
 
 ISprite* Page::GetSprite() const
