@@ -64,7 +64,8 @@ public:
               ISprite* sprTextBack,
               ISprite* sprFade,
               const std::string& csvFile,
-              ISprite* sprImage);
+              ISprite* sprImage,
+              const bool encrypt);
 
     void Next();
     bool Update();

@@ -1,6 +1,7 @@
 #include "StoryTelling.h"
 #include <sstream>
 #include "HeaderOnlyCsv.hpp"
+#include "CaesarCipher.h"
 
 using namespace NSStoryTelling;
 
@@ -38,7 +39,8 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
                                         ISprite* sprTextBack,
                                         ISprite* sprFade,
                                         const std::string& csvFile,
-                                        ISprite* sprImage)
+                                        ISprite* sprImage,
+                                        const bool encrypt)
 {
     m_font = font;
     m_SE = SE;
@@ -46,7 +48,17 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
     m_sprFade = sprFade;
     m_sprImage = sprImage;
 
-    std::vector<std::vector<std::string>> vvs = csv::Read(csvFile);
+    std::vector<std::vector<std::string> > vvs;
+    if (encrypt == false)
+    {
+        vvs = csv::Read(csvFile);
+    }
+    else
+    {
+        auto workStr = CaesarCipher::DecryptFromFile(csvFile);
+        vvs = csv::ReadFromString(workStr);
+    }
+
     std::vector<Page> pageList;
     Page page;
     int pageNum = 0;
