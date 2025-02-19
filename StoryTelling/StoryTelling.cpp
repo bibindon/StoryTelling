@@ -5,6 +5,8 @@
 
 using namespace NSStoryTelling;
 
+bool StoryTelling::m_fastMode = false;
+
 static std::vector<std::string> split(const std::string& s, char delim)
 {
     std::vector<std::string> result;
@@ -32,6 +34,8 @@ void StoryTelling::Init(
     m_sprFade = sprFade;
     m_pageList = pageList;
     m_isFadeIn = true;
+
+    InitConstValue();
 }
 
 void NSStoryTelling::StoryTelling::Init(IFont* font,
@@ -120,6 +124,8 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
     m_pageList = pageList;
 
     m_isFadeIn = true;
+
+    InitConstValue();
 }
 
 void StoryTelling::Next()
@@ -146,6 +152,8 @@ void StoryTelling::Next()
 
 bool StoryTelling::Update()
 {
+    InitConstValue();
+
     bool isFinish = false;
     if (m_isFadeIn)
     {
@@ -237,6 +245,28 @@ void StoryTelling::Finalize()
     }
     delete m_sprImage;
     m_sprImage = nullptr;
+}
+
+void NSStoryTelling::StoryTelling::SetFastMode(const bool arg)
+{
+    m_fastMode = arg;
+}
+
+void NSStoryTelling::StoryTelling::InitConstValue()
+{
+    int& fade_frame_max = const_cast<int&>(FADE_FRAME_MAX);
+    int& wait_next_frame = const_cast<int&>(WAIT_NEXT_FRAME);
+
+    if (m_fastMode)
+    {
+        fade_frame_max = 1;
+        wait_next_frame = 1;
+    }
+    else
+    {
+        fade_frame_max = 20;
+        wait_next_frame = 10;
+    }
 }
 
 ISprite* Page::GetSprite() const

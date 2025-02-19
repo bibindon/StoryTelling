@@ -299,7 +299,7 @@ void InitStory()
     if ("csv mode")
     {
         Sprite* sprite = new Sprite(g_pd3dDevice);
-        story->Init(pFont, pSE, sprTextBack, sprFade, "..\\Sample\\sample.csv", sprite);
+        story->Init(pFont, pSE, sprTextBack, sprFade, "..\\Sample\\sample.csv", sprite, false);
     }
     else
     {
@@ -472,6 +472,16 @@ LRESULT WINAPI MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             story = new StoryTelling();
             InitStory();
+            break;
+        }
+        case 'F':
+        {
+            StoryTelling::SetFastMode(true);
+            break;
+        }
+        case 'G':
+        {
+            StoryTelling::SetFastMode(false);
             break;
         }
         case VK_RETURN:

@@ -73,7 +73,13 @@ public:
 
     void Finalize();
 
+    static void SetFastMode(const bool arg);
+
 private:
+
+    static bool m_fastMode;
+
+    void InitConstValue();
 
     ISprite* m_sprTextBack;
     IFont* m_font;
