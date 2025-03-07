@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CaesarCipher.h" />
+    <ClInclude Include="HeaderOnlyCsv.hpp" />
     <ClInclude Include="StoryTelling.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
