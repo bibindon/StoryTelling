@@ -135,7 +135,7 @@ void StoryTelling::Next()
         return;
     }
     int textIndex = m_pageList.at(m_pageIndex).GetTextIndex();
-    int textIndexMax = m_pageList.at(m_pageIndex).GetTextList().size();
+    int textIndexMax = (int)m_pageList.at(m_pageIndex).GetTextList().size();
     if (textIndex < textIndexMax - 1)
     {
         textIndex++;
