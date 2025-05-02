@@ -18,7 +18,7 @@ class IFont
 {
 public:
     virtual void DrawText_(const std::string& msg, const int x, const int y) = 0;
-    virtual void Init() = 0;
+    virtual void Init(const bool bEnglish) = 0;
     virtual ~IFont() {};
 };
 
@@ -57,7 +57,8 @@ public:
               ISoundEffect* SE,
               ISprite* sprTextBack,
               ISprite* sprFade,
-              const std::vector<Page>& pageList);
+              const std::vector<Page>& pageList,
+              const bool bEnglish);
 
     void Init(IFont* font,
               ISoundEffect* SE,
@@ -65,7 +66,8 @@ public:
               ISprite* sprFade,
               const std::string& csvFile,
               ISprite* sprImage,
-              const bool encrypt);
+              const bool encrypt,
+              const bool bEnglish);
 
     void Next();
     bool Update();

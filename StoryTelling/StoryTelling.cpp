@@ -26,7 +26,8 @@ void StoryTelling::Init(
     ISoundEffect* SE,
     ISprite* sprTextBack,
     ISprite* sprFade,
-    const std::vector<Page>& pageList)
+    const std::vector<Page>& pageList,
+    const bool bEnglish)
 {
     m_font = font;
     m_SE = SE;
@@ -34,6 +35,8 @@ void StoryTelling::Init(
     m_sprFade = sprFade;
     m_pageList = pageList;
     m_isFadeIn = true;
+
+    m_font->Init(bEnglish);
 
     InitConstValue();
 }
@@ -44,13 +47,16 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
                                         ISprite* sprFade,
                                         const std::string& csvFile,
                                         ISprite* sprImage,
-                                        const bool encrypt)
+                                        const bool encrypt,
+                                        const bool bEnglish)
 {
     m_font = font;
     m_SE = SE;
     m_sprTextBack = sprTextBack;
     m_sprFade = sprFade;
     m_sprImage = sprImage;
+
+    m_font->Init(bEnglish);
 
     std::vector<std::vector<std::string> > vvs;
     if (encrypt == false)
