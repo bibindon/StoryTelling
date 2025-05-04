@@ -57,6 +57,7 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
     m_sprImage = sprImage;
 
     m_font->Init(bEnglish);
+    m_SE->Init();
 
     std::vector<std::vector<std::string> > vvs;
     if (encrypt == false)
