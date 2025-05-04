@@ -37,6 +37,7 @@ void StoryTelling::Init(
     m_isFadeIn = true;
 
     m_font->Init(bEnglish);
+    m_SE->Init();
 
     InitConstValue();
 }
