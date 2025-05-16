@@ -1,4 +1,4 @@
-#pragma comment( lib, "d3d9.lib" )
+ï»¿#pragma comment( lib, "d3d9.lib" )
 #if defined(DEBUG) || defined(_DEBUG)
 #pragma comment( lib, "d3dx9d.lib" )
 #else
@@ -128,7 +128,7 @@ public:
                                         OUT_TT_ONLY_PRECIS,
                                         ANTIALIASED_QUALITY,
                                         FF_DONTCARE,
-                                        "‚l‚r –¾’©",
+                                        "ï¼­ï¼³ æ˜æœ",
                                         &m_pFont);
         }
         else
@@ -241,7 +241,7 @@ HRESULT InitD3D(HWND hWnd)
         OUT_TT_ONLY_PRECIS,
         ANTIALIASED_QUALITY,
         FF_DONTCARE,
-        "‚l‚r ƒSƒVƒbƒN",
+        "ï¼­ï¼³ ã‚´ã‚·ãƒƒã‚¯",
         &g_pFont);
     if FAILED(hr)
     {
@@ -254,7 +254,7 @@ HRESULT InitD3D(HWND hWnd)
         g_pd3dDevice, NULL, &pD3DXMtrlBuffer, NULL,
         &dwNumMaterials, &pMesh)))
     {
-        MessageBox(NULL, "Xƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½", NULL, MB_OK);
+        MessageBox(NULL, "Xãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ", NULL, MB_OK);
         return E_FAIL;
     }
     d3dxMaterials = (D3DXMATERIAL*)pD3DXMtrlBuffer->GetBufferPointer();
@@ -273,7 +273,7 @@ HRESULT InitD3D(HWND hWnd)
                 d3dxMaterials[i].pTextureFilename,
                 &pTextures[i])))
             {
-                MessageBox(NULL, "ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½", NULL, MB_OK);
+                MessageBox(NULL, "ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ", NULL, MB_OK);
             }
         }
     }
@@ -295,8 +295,8 @@ HRESULT InitD3D(HWND hWnd)
 
 void InitStory()
 {
-    // new‚Íƒ‰ƒCƒuƒ‰ƒŠ‚Ìg—pÒ‚ª‚·‚é‚ªAdelete‚Íƒ‰ƒCƒuƒ‰ƒŠ“à‚Ås‚í‚ê‚éB
-    // ‚¿‚å‚Á‚Æ—Ç‚­‚È‚¢‚¯‚ÇEEE‚Ü‚Ÿ‚æ‚µI
+    // newã¯ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ä½¿ç”¨è€…ãŒã™ã‚‹ãŒã€deleteã¯ãƒ©ã‚¤ãƒ–ãƒ©ãƒªå†…ã§è¡Œã‚ã‚Œã‚‹ã€‚
+    // ã¡ã‚‡ã£ã¨è‰¯ããªã„ã‘ã©ãƒ»ãƒ»ãƒ»ã¾ãã‚ˆã—ï¼
     ISoundEffect* pSE = new SoundEffect();
 
     Sprite* sprTextBack = new Sprite(g_pd3dDevice);
@@ -307,10 +307,10 @@ void InitStory()
 
     IFont* pFont = new Font(g_pd3dDevice);
 
-    // csvƒtƒ@ƒCƒ‹‚©‚ç“Ç‚Ş‚æ‚¤‚É‚µ‚½‚Ù‚¤‚ª‚¢‚¢‚æ‚¤‚È
-    // •Ê‚É•K—v‚È‚¢‚æ‚¤‚ÈA”÷–­‚È‚Æ‚±‚ëB
-    // ‹‘å‚ÈƒQ[ƒ€‚ğì‚é‚í‚¯‚¶‚á‚È‚¢‚µB
-    // ’Ç‹LF•K—v‚¾‚Á‚½B
+    // csvãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã‚€ã‚ˆã†ã«ã—ãŸã»ã†ãŒã„ã„ã‚ˆã†ãª
+    // åˆ¥ã«å¿…è¦ãªã„ã‚ˆã†ãªã€å¾®å¦™ãªã¨ã“ã‚ã€‚
+    // å·¨å¤§ãªã‚²ãƒ¼ãƒ ã‚’ä½œã‚‹ã‚ã‘ã˜ã‚ƒãªã„ã—ã€‚
+    // è¿½è¨˜ï¼šå¿…è¦ã ã£ãŸã€‚
 
     if ("csv mode")
     {
@@ -327,19 +327,19 @@ void InitStory()
             page.SetSprite(sprite);
             std::vector<std::vector<std::string> > vss;
             std::vector<std::string> vs;
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚P");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚Q");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚R");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼‘");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼’");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼“");
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚SƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚SƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚S");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚TƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚TƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚T");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚UƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚UƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚U");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼”ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼”ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼”");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼•ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼•ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼•");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼–ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼–ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼–");
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚VƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚VƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚VƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚VƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚V");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚WƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚WƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚WƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚WƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚W");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚XƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚XƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚XƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚XƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚X");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼—ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼—ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼—ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼—ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼—");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼˜ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼˜ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼˜ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼˜ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼˜");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼™ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼™ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼™ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼™ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼™");
             vss.push_back(vs);
             page.SetTextList(vss);
             pageList.push_back(page);
@@ -351,14 +351,14 @@ void InitStory()
             page.SetSprite(sprite);
             std::vector<std::vector<std::string> > vss;
             std::vector<std::string> vs;
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚`");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚a");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚b");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¡");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¢");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼£");
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚cƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚cƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚c");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚dƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚d");
-            vs.push_back("ƒTƒ“ƒvƒ‹ƒeƒLƒXƒg‚e");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¤ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¤ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¤");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¥ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¥");
+            vs.push_back("ã‚µãƒ³ãƒ—ãƒ«ãƒ†ã‚­ã‚¹ãƒˆï¼¦");
             vss.push_back(vs);
             page.SetTextList(vss);
             pageList.push_back(page);
@@ -370,16 +370,16 @@ void InitStory()
             page.SetSprite(sprite);
             std::vector<std::vector<std::string> > vss;
             std::vector<std::string> vs;
-            vs.push_back("‚P‚P‚P‚P‚P‚P‚P‚P‚P‚P‚P");
-            vs.push_back("‚Q‚Q‚Q‚Q‚Q‚Q‚Q‚Q‚Q‚Q‚Q‚Q‚Q");
-            vs.push_back("‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R‚R");
+            vs.push_back("ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘ï¼‘");
+            vs.push_back("ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’ï¼’");
+            vs.push_back("ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“ï¼“");
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S‚S");
+            vs.push_back("ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”ï¼”");
             vs.push_back("");
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T‚T");
+            vs.push_back("ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•ï¼•");
             vss.push_back(vs);
             page.SetTextList(vss);
             pageList.push_back(page);
@@ -438,7 +438,7 @@ VOID Render()
     if (SUCCEEDED(g_pd3dDevice->BeginScene()))
     {
         char msg[128];
-        strcpy_s(msg, 128, "‚lƒL[‚Å†Å‹ŠJn");
+        strcpy_s(msg, 128, "ï¼­ã‚­ãƒ¼ã§ç´™èŠå±…é–‹å§‹");
         TextDraw(g_pFont, msg, 0, 0);
 
         pEffect->SetTechnique("BasicTec");

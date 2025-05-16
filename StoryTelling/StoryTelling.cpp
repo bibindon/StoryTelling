@@ -1,4 +1,4 @@
-#include "StoryTelling.h"
+ï»¿#include "StoryTelling.h"
 #include <sstream>
 #include "HeaderOnlyCsv.hpp"
 #include "CaesarCipher.h"
@@ -80,12 +80,12 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
         std::vector<std::string> line = vvs.at(i);
         int pageNumTemp = std::stoi(line.at(0));
 
-        // V‚µ‚¢ƒy[ƒW
+        // æ–°ã—ã„ãƒšãƒ¼ã‚¸
         if (pageNum != pageNumTemp)
         {
-            // ŒÃ‚¢ƒy[ƒW‚ğ“o˜^
+            // å¤ã„ãƒšãƒ¼ã‚¸ã‚’ç™»éŒ²
             {
-                // ‚Ps–Ú‚¾‚Á‚½‚çŒÃ‚¢ƒy[ƒW‚Í‚È‚¢
+                // ï¼‘è¡Œç›®ã ã£ãŸã‚‰å¤ã„ãƒšãƒ¼ã‚¸ã¯ãªã„
                 if (page.GetSprite() == nullptr)
                 {
                     // Do nothing

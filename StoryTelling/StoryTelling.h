@@ -1,4 +1,4 @@
-// CSV�t�@�C���ǂݍ��݂͕ۗ��B���̃N���X���g���@�3�񂭂炢�����Ȃ��Ȃ�A����Ă��Ӗ��Ȃ��B
+﻿// CSVファイル読み込みは保留。このクラスを使う機会が3回くらいしかないなら、作っても意味ない。
 #pragma once
 #include <string>
 #include <vector>
