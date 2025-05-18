@@ -9,7 +9,7 @@ class ISprite
 {
 public:
     virtual void DrawImage(const int x, const int y, const int transparency = 255) = 0;
-    virtual void Load(const std::string& filepath) = 0;
+    virtual void Load(const std::wstring& filepath) = 0;
     virtual ISprite* Create() = 0;
     virtual ~ISprite() {};
 };
@@ -17,7 +17,7 @@ public:
 class IFont
 {
 public:
-    virtual void DrawText_(const std::string& msg, const int x, const int y) = 0;
+    virtual void DrawText_(const std::wstring& msg, const int x, const int y) = 0;
     virtual void Init(const bool bEnglish) = 0;
     virtual ~IFont() {};
 };
@@ -36,8 +36,8 @@ public:
     ISprite* GetSprite() const;
     void SetSprite(ISprite* sprite);
 
-    std::vector<std::vector<std::string>> GetTextList() const;
-    void SetTextList(const std::vector<std::vector<std::string>>& textList);
+    std::vector<std::vector<std::wstring>> GetTextList() const;
+    void SetTextList(const std::vector<std::vector<std::wstring>>& textList);
 
     int GetTextIndex() const;
     void SetTextIndex(const int index);
@@ -45,7 +45,7 @@ public:
 private:
 
     ISprite* m_sprite = nullptr;
-    std::vector<std::vector<std::string>> m_textList;
+    std::vector<std::vector<std::wstring>> m_textList;
     int m_textIndex = 0;
 };
 
@@ -64,7 +64,7 @@ public:
               ISoundEffect* SE,
               ISprite* sprTextBack,
               ISprite* sprFade,
-              const std::string& csvFile,
+              const std::wstring& csvFile,
               ISprite* sprImage,
               const bool encrypt,
               const bool bEnglish);

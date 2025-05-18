@@ -7,11 +7,11 @@ using namespace NSStoryTelling;
 
 bool StoryTelling::m_fastMode = false;
 
-static std::vector<std::string> split(const std::string& s, char delim)
+static std::vector<std::wstring> split(const std::wstring& s, wchar_t delim)
 {
-    std::vector<std::string> result;
-    std::stringstream ss(s);
-    std::string item;
+    std::vector<std::wstring> result;
+    std::wstringstream ss(s);
+    std::wstring item;
 
     while (getline(ss, item, delim))
     {
@@ -46,7 +46,7 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
                                         ISoundEffect* SE,
                                         ISprite* sprTextBack,
                                         ISprite* sprFade,
-                                        const std::string& csvFile,
+                                        const std::wstring& csvFile,
                                         ISprite* sprImage,
                                         const bool encrypt,
                                         const bool bEnglish)
@@ -60,7 +60,7 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
     m_font->Init(bEnglish);
     m_SE->Init();
 
-    std::vector<std::vector<std::string> > vvs;
+    std::vector<std::vector<std::wstring> > vvs;
     if (encrypt == false)
     {
         vvs = csv::Read(csvFile);
@@ -74,10 +74,10 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
     std::vector<Page> pageList;
     Page page;
     int pageNum = 0;
-    std::vector<std::vector<std::string>> textList;
+    std::vector<std::vector<std::wstring>> textList;
     for (size_t i = 1; i < vvs.size(); ++i)
     {
-        std::vector<std::string> line = vvs.at(i);
+        std::vector<std::wstring> line = vvs.at(i);
         int pageNumTemp = std::stoi(line.at(0));
 
         // 新しいページ
@@ -100,27 +100,27 @@ void NSStoryTelling::StoryTelling::Init(IFont* font,
                 }
             }
             pageNum = pageNumTemp;
-            std::string imagePath = line.at(1);
+            std::wstring imagePath = line.at(1);
 
             ISprite* sprite = sprImage->Create();
             sprite->Load(imagePath);
             page.SetSprite(sprite);
 
-            std::vector<std::string> texts = split(line.at(2), '\n');
+            std::vector<std::wstring> texts = split(line.at(2), L'\n');
 
             for (size_t j = 0; j < texts.size(); ++j)
             {
-                texts.at(j).erase(std::remove(texts.at(j).begin(), texts.at(j).end(), '"'),
+                texts.at(j).erase(std::remove(texts.at(j).begin(), texts.at(j).end(), L'"'),
                                   texts.at(j).end());
             }
             textList.push_back(texts);
         }
         else
         {
-            std::vector<std::string> texts = split(line.at(2), '\n');
+            std::vector<std::wstring> texts = split(line.at(2), L'\n');
             for (size_t j = 0; j < texts.size(); ++j)
             {
-                texts.at(j).erase(std::remove(texts.at(j).begin(), texts.at(j).end(), '"'),
+                texts.at(j).erase(std::remove(texts.at(j).begin(), texts.at(j).end(), L'"'),
                                   texts.at(j).end());
             }
             textList.push_back(texts);
@@ -209,7 +209,7 @@ void StoryTelling::Render()
 {
     m_pageList.at(m_pageIndex).GetSprite()->DrawImage(0, 0);
     m_sprTextBack->DrawImage(0, 0);
-    std::vector<std::vector<std::string>> vss = m_pageList.at(m_pageIndex).GetTextList();
+    std::vector<std::vector<std::wstring>> vss = m_pageList.at(m_pageIndex).GetTextList();
     int textIndex = m_pageList.at(m_pageIndex).GetTextIndex();
     if (vss.at(textIndex).size() >= 1)
     {
@@ -287,12 +287,12 @@ void Page::SetSprite(ISprite* sprite)
     m_sprite = sprite;
 }
 
-std::vector<std::vector<std::string>> Page::GetTextList() const
+std::vector<std::vector<std::wstring>> Page::GetTextList() const
 {
     return m_textList;
 }
 
-void Page::SetTextList(const std::vector<std::vector<std::string>>& textList)
+void Page::SetTextList(const std::vector<std::vector<std::wstring>>& textList)
 {
     m_textList = textList;
 }

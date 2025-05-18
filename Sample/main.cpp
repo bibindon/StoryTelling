@@ -1,13 +1,13 @@
-﻿#pragma comment( lib, "d3d9.lib" )
+﻿#pragma comment( lib, "d3d9.lib")
 #if defined(DEBUG) || defined(_DEBUG)
-#pragma comment( lib, "d3dx9d.lib" )
+#pragma comment( lib, "d3dx9d.lib")
 #else
-#pragma comment( lib, "d3dx9.lib" )
+#pragma comment( lib, "d3dx9.lib")
 #endif
 
 #pragma comment (lib, "winmm.lib")
 
-#pragma comment( lib, "StoryTelling.lib" )
+#pragma comment( lib, "StoryTelling.lib")
 
 #include "..\StoryTelling\StoryTelling.h"
 
@@ -19,6 +19,7 @@
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
+#include <tchar.h>
 
 using namespace NSStoryTelling;
 
@@ -53,7 +54,7 @@ public:
 
     }
 
-    void Load(const std::string& filepath) override
+    void Load(const std::wstring& filepath) override
     {
         LPD3DXSPRITE tempSprite { nullptr };
         if (FAILED(D3DXCreateSprite(m_pD3DDevice, &m_D3DSprite)))
@@ -128,7 +129,7 @@ public:
                                         OUT_TT_ONLY_PRECIS,
                                         ANTIALIASED_QUALITY,
                                         FF_DONTCARE,
-                                        "ＭＳ 明朝",
+                                        _T("ＭＳ 明朝"),
                                         &m_pFont);
         }
         else
@@ -143,12 +144,12 @@ public:
                                         OUT_TT_ONLY_PRECIS,
                                         CLEARTYPE_QUALITY,
                                         FF_DONTCARE,
-                                        "Courier New",
+                                        _T("Courier New"),
                                         &m_pFont);
         }
     }
 
-    virtual void DrawText_(const std::string& msg, const int x, const int y)
+    virtual void DrawText_(const std::wstring& msg, const int x, const int y)
     {
         RECT rect = { x, y, 0, 0 };
         m_pFont->DrawText(NULL, msg.c_str(), -1, &rect, DT_LEFT | DT_NOCLIP,
@@ -172,7 +173,7 @@ class SoundEffect : public ISoundEffect
 {
     virtual void PlayMove() override
     {
-        PlaySound("cursor_move.wav", NULL, SND_FILENAME | SND_ASYNC);
+        PlaySound(_T("cursor_move.wav"), NULL, SND_FILENAME | SND_ASYNC);
     }
     virtual void Init() override
     {
@@ -194,7 +195,7 @@ bool bFinish = false;
 
 StoryTelling* story = nullptr;
 
-void TextDraw(LPD3DXFONT pFont, char* text, int X, int Y)
+void TextDraw(LPD3DXFONT pFont, wchar_t* text, int X, int Y)
 {
     RECT rect = { X,Y,0,0 };
     pFont->DrawText(NULL, text, -1, &rect, DT_LEFT | DT_NOCLIP, D3DCOLOR_ARGB(255, 0, 0, 0));
@@ -241,7 +242,7 @@ HRESULT InitD3D(HWND hWnd)
         OUT_TT_ONLY_PRECIS,
         ANTIALIASED_QUALITY,
         FF_DONTCARE,
-        "ＭＳ ゴシック",
+        _T("ＭＳ ゴシック"),
         &g_pFont);
     if FAILED(hr)
     {
@@ -250,11 +251,11 @@ HRESULT InitD3D(HWND hWnd)
 
     LPD3DXBUFFER pD3DXMtrlBuffer = NULL;
 
-    if (FAILED(D3DXLoadMeshFromX("cube.x", D3DXMESH_SYSTEMMEM,
+    if (FAILED(D3DXLoadMeshFromX(_T("cube.x"), D3DXMESH_SYSTEMMEM,
         g_pd3dDevice, NULL, &pD3DXMtrlBuffer, NULL,
         &dwNumMaterials, &pMesh)))
     {
-        MessageBox(NULL, "Xファイルの読み込みに失敗しました", NULL, MB_OK);
+        MessageBox(NULL, _T("Xファイルの読み込みに失敗しました"), NULL, MB_OK);
         return E_FAIL;
     }
     d3dxMaterials = (D3DXMATERIAL*)pD3DXMtrlBuffer->GetBufferPointer();
@@ -266,14 +267,16 @@ HRESULT InitD3D(HWND hWnd)
         pMaterials[i] = d3dxMaterials[i].MatD3D;
         pMaterials[i].Ambient = pMaterials[i].Diffuse;
         pTextures[i] = NULL;
-        if (d3dxMaterials[i].pTextureFilename != NULL &&
-            lstrlen(d3dxMaterials[i].pTextureFilename) > 0)
+
+        int len = MultiByteToWideChar(CP_UTF8, 0, d3dxMaterials[i].pTextureFilename, -1, nullptr, 0);
+        std::wstring result(len - 1, 0);
+        MultiByteToWideChar(CP_UTF8, 0, d3dxMaterials[i].pTextureFilename, -1, &result[0], len);
+
+        if (!result.empty())
         {
-            if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice,
-                d3dxMaterials[i].pTextureFilename,
-                &pTextures[i])))
+            if (FAILED(D3DXCreateTextureFromFile(g_pd3dDevice, result.c_str(), &pTextures[i])))
             {
-                MessageBox(NULL, "テクスチャの読み込みに失敗しました", NULL, MB_OK);
+                MessageBox(NULL, _T("テクスチャの読み込みに失敗しました"), NULL, MB_OK);
             }
         }
     }
@@ -281,7 +284,7 @@ HRESULT InitD3D(HWND hWnd)
 
     D3DXCreateEffectFromFile(
         g_pd3dDevice,
-        "simple.fx",
+        _T("simple.fx"),
         NULL,
         NULL,
         D3DXSHADER_DEBUG,
@@ -300,10 +303,10 @@ void InitStory()
     ISoundEffect* pSE = new SoundEffect();
 
     Sprite* sprTextBack = new Sprite(g_pd3dDevice);
-    sprTextBack->Load("textBack.png");
+    sprTextBack->Load(_T("textBack.png"));
 
     Sprite* sprFade = new Sprite(g_pd3dDevice);
-    sprFade->Load("black.png");
+    sprFade->Load(_T("black.png"));
 
     IFont* pFont = new Font(g_pd3dDevice);
 
@@ -312,10 +315,10 @@ void InitStory()
     // 巨大なゲームを作るわけじゃないし。
     // 追記：必要だった。
 
-    if ("csv mode")
+    if (_T("csv mode"))
     {
         Sprite* sprite = new Sprite(g_pd3dDevice);
-        story->Init(pFont, pSE, sprTextBack, sprFade, "..\\Sample\\sample.csv", sprite, false, true);
+        story->Init(pFont, pSE, sprTextBack, sprFade, _T("..\\Sample\\sample.csv"), sprite, false, true);
     }
     else
     {
@@ -323,23 +326,23 @@ void InitStory()
         {
             Page page;
             Sprite* sprite = new Sprite(g_pd3dDevice);
-            sprite->Load("opening01.png");
+            sprite->Load(_T("opening01.png"));
             page.SetSprite(sprite);
-            std::vector<std::vector<std::string> > vss;
-            std::vector<std::string> vs;
-            vs.push_back("サンプルテキスト１");
-            vs.push_back("サンプルテキスト２");
-            vs.push_back("サンプルテキスト３");
+            std::vector<std::vector<std::wstring> > vss;
+            std::vector<std::wstring> vs;
+            vs.push_back(_T("サンプルテキスト１"));
+            vs.push_back(_T("サンプルテキスト２"));
+            vs.push_back(_T("サンプルテキスト３"));
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("サンプルテキスト４サンプルテキスト４サンプルテキスト４");
-            vs.push_back("サンプルテキスト５サンプルテキスト５サンプルテキスト５");
-            vs.push_back("サンプルテキスト６サンプルテキスト６サンプルテキスト６");
+            vs.push_back(_T("サンプルテキスト４サンプルテキスト４サンプルテキスト４"));
+            vs.push_back(_T("サンプルテキスト５サンプルテキスト５サンプルテキスト５"));
+            vs.push_back(_T("サンプルテキスト６サンプルテキスト６サンプルテキスト６"));
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７");
-            vs.push_back("サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８");
-            vs.push_back("サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９");
+            vs.push_back(_T("サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７サンプルテキスト７"));
+            vs.push_back(_T("サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８サンプルテキスト８"));
+            vs.push_back(_T("サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９サンプルテキスト９"));
             vss.push_back(vs);
             page.SetTextList(vss);
             pageList.push_back(page);
@@ -347,18 +350,18 @@ void InitStory()
         {
             Page page;
             Sprite* sprite = new Sprite(g_pd3dDevice);
-            sprite->Load("opening02.png");
+            sprite->Load(_T("opening02.png"));
             page.SetSprite(sprite);
-            std::vector<std::vector<std::string> > vss;
-            std::vector<std::string> vs;
-            vs.push_back("サンプルテキストＡ");
-            vs.push_back("サンプルテキストＢ");
-            vs.push_back("サンプルテキストＣ");
+            std::vector<std::vector<std::wstring> > vss;
+            std::vector<std::wstring> vs;
+            vs.push_back(_T("サンプルテキストＡ"));
+            vs.push_back(_T("サンプルテキストＢ"));
+            vs.push_back(_T("サンプルテキストＣ"));
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("サンプルテキストＤサンプルテキストＤサンプルテキストＤ");
-            vs.push_back("サンプルテキストＥサンプルテキストＥ");
-            vs.push_back("サンプルテキストＦ");
+            vs.push_back(_T("サンプルテキストＤサンプルテキストＤサンプルテキストＤ"));
+            vs.push_back(_T("サンプルテキストＥサンプルテキストＥ"));
+            vs.push_back(_T("サンプルテキストＦ"));
             vss.push_back(vs);
             page.SetTextList(vss);
             pageList.push_back(page);
@@ -366,20 +369,20 @@ void InitStory()
         {
             Page page;
             Sprite* sprite = new Sprite(g_pd3dDevice);
-            sprite->Load("opening03.png");
+            sprite->Load(_T("opening03.png"));
             page.SetSprite(sprite);
-            std::vector<std::vector<std::string> > vss;
-            std::vector<std::string> vs;
-            vs.push_back("１１１１１１１１１１１");
-            vs.push_back("２２２２２２２２２２２２２");
-            vs.push_back("３３３３３３３３３３３３３３３３３");
+            std::vector<std::vector<std::wstring> > vss;
+            std::vector<std::wstring> vs;
+            vs.push_back(_T("１１１１１１１１１１１"));
+            vs.push_back(_T("２２２２２２２２２２２２２"));
+            vs.push_back(_T("３３３３３３３３３３３３３３３３３"));
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４");
-            vs.push_back("");
+            vs.push_back(_T("４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４４"));
+            vs.push_back(_T(""));
             vss.push_back(vs);
             vs.clear();
-            vs.push_back("５５５５５５５５５５５５５５５５５");
+            vs.push_back(_T("５５５５５５５５５５５５５５５５５"));
             vss.push_back(vs);
             page.SetTextList(vss);
             pageList.push_back(page);
@@ -437,8 +440,8 @@ VOID Render()
 
     if (SUCCEEDED(g_pd3dDevice->BeginScene()))
     {
-        char msg[128];
-        strcpy_s(msg, 128, "Ｍキーで紙芝居開始");
+        wchar_t msg[128];
+        wcscpy_s(msg, 128, _T("Ｍキーで紙芝居開始"));
         TextDraw(g_pFont, msg, 0, 0);
 
         pEffect->SetTechnique("BasicTec");
@@ -530,7 +533,7 @@ INT WINAPI wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ 
 {
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L,
                       GetModuleHandle(NULL), NULL, NULL, NULL, NULL,
-                      "Window1", NULL };
+                      _T("Window1"), NULL };
     RegisterClassEx(&wc);
 
     RECT rect;
@@ -541,7 +544,7 @@ INT WINAPI wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ 
     rect.top = 0;
     rect.left = 0;
 
-    HWND hWnd = CreateWindow("Window1", "Hello DirectX9 World !!",
+    HWND hWnd = CreateWindow(_T("Window1"), _T("Hello DirectX9 World !!"),
         WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, rect.right, rect.bottom,
         NULL, NULL, wc.hInstance, NULL);
 
@@ -558,7 +561,7 @@ INT WINAPI wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPWSTR, _In_ 
         }
     }
 
-    UnregisterClass("Window1", wc.hInstance);
+    UnregisterClass(_T("Window1"), wc.hInstance);
     Cleanup();
     _CrtDumpMemoryLeaks();
     return 0;
